@@ -7,6 +7,7 @@ from PyQt5.Qt import Qt
 import tempfile
 import os
 
+
 class Animator:
 
     def __init__(self, name = None, setup_handle = None):
@@ -29,20 +30,16 @@ class Animator:
         self.slider.valueChanged.connect(self.visualize)
         layout.addWidget(self.slider)
 
-        self.recompile_buttom = QtWidgets.QPushButton("Recompile")
-        self.recompile_buttom.pressed.connect(self.recompile)
-        # hide button for now...
-        # layout.addWidget(self.recompile_buttom)
-
-
         self.precompiled_cb = QtWidgets.QCheckBox("Precompiled")
         layout.addWidget(self.precompiled_cb)
 
         self.precompiled = None
 
+        self.name = name
         if name == None:
             self.tmpdir = tempfile.TemporaryDirectory()
             self.dir = self.tmpdir.name
+            self.name = 'animator_'+self.dir
         else:
             self.dir = ".precompiled/" + name
             if not os.path.exists(self.dir):
@@ -64,7 +61,7 @@ class Animator:
         if len(os.listdir(self.dir)) == 0:
             print("precompiling images...")
             for i in range(self.max_frame):
-                print("compiling frame {}/80".format(i))
+                print("compiling frame {}/{}".format(i, self.max_frame))
                 self.frame_handle(i)
                 plt.savefig("{}/{}.png".format(self.dir, i))
 
@@ -99,8 +96,6 @@ class Animator:
         self.w.show()
         self.visualize(0)
         self.qApp.exec()
-
-
 
 
 

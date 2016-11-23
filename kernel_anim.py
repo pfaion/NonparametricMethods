@@ -12,7 +12,7 @@ def kernel_estimator(x, data, h, kernel):
     N = len(data)
     return 1/(N*h) * sum(kernel((x-d)/h) for d in data)
 
-h = 0.1
+h = 0.5
 xs = np.arange(0, 8, 0.01)
 data = [0.5, 0.7, 0.8, 1.9, 2.4, 6.1, 6.2, 7.3]
 estimate = [kernel_estimator(x, data, h, gaussian_kernel) for x in xs]
@@ -57,4 +57,4 @@ def frame(i):
 
 a = Animator(name='GaussianEstimator', setup_handle=setup)
 a.setFrameCallback(frame_handle=frame, max_frame=80)
-a.run(clear=True, precompile=False)
+a.run(clear=True, precompile=True)
