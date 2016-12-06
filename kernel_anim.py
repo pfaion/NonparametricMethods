@@ -57,4 +57,4 @@ def frame(i):
 
 a = Animator(name='GaussianEstimator', setup_handle=setup)
 a.setFrameCallback(frame_handle=frame, max_frame=80)
-a.run(clear=True, precompile=True)
+a.run(clear=False, precompile=True)

@@ -1,4 +1,5 @@
 import matplotlib
+import matplotlib.backend_bases
 matplotlib.use("Qt5Agg")
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -9,6 +10,13 @@ import os
 
 
 class Animator:
+
+
+    def mouseFun(self, event: matplotlib.backend_bases.MouseEvent):
+        self.click_cb(**(event.__dict__))
+        self.visualize()
+
+
 
     def __init__(self, name = None, setup_handle = None):
         self.qApp = QtWidgets.QApplication([])
@@ -25,6 +33,8 @@ class Animator:
         self.fig = plt.figure()
         self.canvas = FigureCanvas(self.fig)
         self.stack.addWidget(self.canvas)
+
+        self.canvas.mpl_connect('button_press_event', self.mouseFun)
 
         self.slider = QtWidgets.QSlider(Qt.Horizontal)
         self.slider.valueChanged.connect(self.visualize)
@@ -53,6 +63,9 @@ class Animator:
         self.max_frame = max_frame
         self.slider.setMaximum(max_frame - 1)
 
+    def setClickCallback(self, click_cb):
+        self.click_cb = click_cb
+
     def recompile(self):
         self.clear()
         self.precompile()
@@ -66,7 +79,9 @@ class Animator:
                 plt.savefig("{}/{}.png".format(self.dir, i))
 
 
-    def visualize(self, i):
+    def visualize(self, i = None):
+        if i == None:
+            i = self.slider.value()
         if self.precompiled_cb.isChecked():
             if not self.precompiled:
                 self.precompile()
