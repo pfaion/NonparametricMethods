@@ -370,7 +370,10 @@ If LOF(x) is close to 1, x is not an outlier; as it gets larger, the probability
 
 \section{Nonparametric Regression}
 \begin{frame}[fragile]{Nonparametric Regression: Smoothing Models}
-Running Mean Smoother
+ $X=\left\{x^t,r^t\right\}, r^t\in R$ \\
+$r^t=g(x^t)+\epsilon$\\
+
+Running Mean Smoother:
 
 \begin{equation}
 g(x)=\frac{\sum_{t=1}^{N}w\left(\frac{x-x^t}{h}\right)r^t}{\sum_{t=1}^{N}w\left(\frac{x-x^t}{h}\right)}
@@ -378,7 +381,7 @@ g(x)=\frac{\sum_{t=1}^{N}w\left(\frac{x-x^t}{h}\right)r^t}{\sum_{t=1}^{N}w\left(
 w(u)=\begin{cases} 1, & \mbox{if } |u|<h \\ 0, & \mbox{otherwise } \end{cases}
 \end{equation} 
 
-Kernel Smoother
+Kernel Smoother:
 \begin{equation}
 g(x)=\frac{\sum_{t=1}^{N}K\left(\frac{x-x^t}{h}\right)r^t}{\sum_{t=1}^{N}K\left(\frac{x-x^t}{h}\right)}
 \end{equation} 
