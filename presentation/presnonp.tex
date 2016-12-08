@@ -127,7 +127,7 @@ these.
 
 \section{Nonparametric Density Estimation}
 
-\begin{frame}[fragile]{Naive histogram estimator}
+\begin{frame}[fragile]{Naive Histogram Estimator}
 The estimate is the sum of influences of $x^t$ whose regions include x.
 Because this region of influence is “hard” (0 or 1), the estimate is not a
 continuous function and has jumps at xt ± h/2.
@@ -135,13 +135,15 @@ continuous function and has jumps at xt ± h/2.
 		\hat p(x)=\frac{\#(x^t \textnormal{in the same bin as x})}{Nh}
 	\end{equation}
 
-    
-
-
-
 \end{frame}
 
-\begin{frame}[fragile]{Kernel estimator}
+\begin{frame}[fragile]{Naive Histogram Estimator}
+  \begin{center}
+    \includegraphics[height=0.9\textheight]{images/naive_estimator.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Kernel Estimator}
 A smooth weight function called a kernel to make estimate smooth. 
 The most popular is the Gaussian kernel:
 
@@ -152,6 +154,12 @@ The most popular is the Gaussian kernel:
 		K(u)=\frac{1}{2\pi}exp\left(\frac{-u^2}{2}\right)
 	\end{equation}    
 
+\end{frame}
+
+\begin{frame}[fragile]{Kernel Estimator}
+  \begin{center}
+    \includegraphics[height=0.9\textheight]{images/kernel_estimator.png}
+  \end{center}
 \end{frame}
 
 \begin{frame}[fragile]{k-Nearest Neighbor Estimator}
@@ -167,6 +175,12 @@ N, the sample size.\\For each x:  \:  \(  d_{1}(x)\leqslant d_{2}(x)\leqslant  .
 	\end{equation}
    
 
+\end{frame}
+
+\begin{frame}[fragile]{k-Nearest Neighbor Estimator}
+  \begin{center}
+    \includegraphics[height=0.9\textheight]{images/knn_estimator.png}
+  \end{center}
 \end{frame}
 
 
@@ -204,7 +218,7 @@ Kernel density estimator:
 
 \section{Nonparametric Classification}
 %\   
-\begin{frame}[fragile]{Nonparametric Classification}
+\begin{frame}[fragile]{Kernel Classification}
   
 
 We can estimate class-conditional densities $ p(x|C_{i})$ also with a nonparametric kernel approach:
@@ -224,14 +238,14 @@ Then classify with:
 		
 \end{frame}	
 
-\begin{frame}[fragile]{Nonparametric Classification}
+\begin{frame}[fragile]{Kernel Classification}
 \begin{center}
   \includegraphics[height=0.9\textheight]{images/classification_kernel.png}
 \end{center}
 \end{frame}
 
 
-\begin{frame}[fragile]{Nonparametric Classification}	
+\begin{frame}[fragile]{k-nn Classification}	
 For the knn approach, we get the following densities:
 	\begin{equation}
 		\hat p(x|C_{i})=\frac{k_{i}}{N_{i}V^{k}(x)}
@@ -246,7 +260,7 @@ For the knn approach, we get the following densities:
 \end{frame}
 
 
-\begin{frame}[fragile]{Nonparametric Classification}
+\begin{frame}[fragile]{k-nn Classification}
 	We can now calculate the marginal probability for the data:
   
   \begin{align}
@@ -257,7 +271,7 @@ For the knn approach, we get the following densities:
   \end{align}
 \end{frame}
 
-\begin{frame}[fragile]{Nonparametric Classification}
+\begin{frame}[fragile]{k-nn Classification}
 	Classification is done with:
   
   \begin{align}
@@ -271,7 +285,7 @@ For the knn approach, we get the following densities:
   \end{equation}
 \end{frame}
 
-\begin{frame}[fragile]{Nonparametric Classification}
+\begin{frame}[fragile]{k-nn Classification}
 \begin{center}
   \includegraphics[height=0.9\textheight]{images/classification_knn.png}
 \end{center}

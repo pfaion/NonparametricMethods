@@ -18,21 +18,22 @@ def setup():
     plt.xlim(0,10)
     plt.draw()
 
-xs = np.arange(0, 10, 0.1)
-ys = np.arange(0, 10, 0.1)
-k = 3
+xs = np.arange(0, 10, 0.06)
+ys = np.arange(0, 10, 0.06)
 
 def frame(i):
+    k = 3 + i
     global points
     plt.cla()
+    plt.title('k = {}'.format(k))
     if not points:
         return
     if len(points) >= k+1:
 
 
         img = np.zeros((len(xs), len(ys)))
-        for y_i, y in enumerate(ys):
-            for x_i, x in enumerate(xs):
+        for x_i, x in enumerate(xs):
+            for y_i, y in enumerate(ys):
 
                 neighbors_dists = [(p_t, dist(p_t, (x, y))) for p_t in points]
                 neighbors_dists.sort(key=lambda item: item[1])
@@ -44,7 +45,7 @@ def frame(i):
                     sorted(dist(p_t, s) for p_t in points)[k]
                     for s in k_nns
                 ) / k
-                img[x_i, y_i] = d_k / avg_dist
+                img[y_i, x_i] = d_k / avg_dist
 
         plt.imshow(img, extent=(0,10,0,10), cmap=plt.cm.Reds, origin='lower')
 
@@ -52,14 +53,14 @@ def frame(i):
         colormap = LinearSegmentedColormap.from_list('', [
             matplotlib.colors.to_rgba('r', alpha=0),
             matplotlib.colors.to_rgba('k', alpha=1)])
-        plt.imshow(np.isclose(img, 1.0, atol=0.01), extent=(0,10,0,10), cmap=colormap, origin='lower')
+        plt.imshow(np.isclose(img, 1.0, atol=0.02), extent=(0,10,0,10), cmap=colormap, origin='lower')
 
 
 
 
 
 
-    plt.plot(*zip(*points), 'xb')
+    plt.plot(*zip(*points), 'xb', markersize=8)
     plt.ylim(0,10)
     plt.xlim(0,10)
     plt.draw()
@@ -78,6 +79,6 @@ def click(xdata, ydata, dblclick, button, **kwargs):
 
 
 a = Animator(name='LOFAnimation', setup_handle=setup)
-a.setFrameCallback(frame_handle=frame, max_frame=80)
+a.setFrameCallback(frame_handle=frame, max_frame=3)
 a.setClickCallback(click)
 a.run(clear=True, precompile=False)
