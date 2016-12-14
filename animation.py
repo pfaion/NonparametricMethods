@@ -3,7 +3,7 @@ import matplotlib.backend_bases
 matplotlib.use("Qt5Agg")
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from PyQt5 import QtWidgets, QtGui
+from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.Qt import Qt
 import tempfile
 import os
@@ -18,6 +18,15 @@ class Animator:
 
 
 
+    def setScaledPixmap(self):
+        if not self.pixmap:
+            return
+        if not self.pixw or not self.pixh:
+            self.label.setPixmap(self.pixmap)
+        else:
+            self.label.setPixmap(self.pixmap.scaled(self.pixw, self.pixh, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+
+
     def __init__(self, name = None, setup_handle = None):
         self.qApp = QtWidgets.QApplication([])
 
@@ -25,14 +34,32 @@ class Animator:
         layout = QtWidgets.QVBoxLayout()
         self.w.setLayout(layout)
 
+
+
         self.stack = QtWidgets.QStackedLayout()
         layout.addLayout(self.stack)
 
+
         self.label = QtWidgets.QLabel()
         self.stack.addWidget(self.label)
+        self.pixmap = None # type: QtGui.QPixmap
+        self.pixw = None
+        self.pixh = None
+
+        def widgetResizeEvent(event: QtGui.QResizeEvent):
+            nonlocal self
+            new_size = event.size()  # type: QtCore.QSize
+            self.pixw = new_size.width() - 100
+            self.pixh = new_size.height() - 100
+            self.setScaledPixmap()
+
+        self.w.resizeEvent = widgetResizeEvent
+
+
         self.fig = plt.figure()
         self.canvas = FigureCanvas(self.fig)
         self.stack.addWidget(self.canvas)
+
 
         self.canvas.mpl_connect('button_press_event', self.mouseFun)
 
@@ -87,9 +114,10 @@ class Animator:
                 self.precompile()
             if self.stack.currentWidget() != self.label:
                 self.stack.setCurrentWidget(self.label)
-            pm = QtGui.QPixmap("{}/{}.png".format(self.dir, i))
-            self.label.setPixmap(pm)
+            self.pixmap = QtGui.QPixmap("{}/{}.png".format(self.dir, i))
+            self.setScaledPixmap()
         else:
+            self.pixmap = None
             if self.stack.currentWidget() != self.canvas:
                 self.stack.setCurrentWidget(self.canvas)
             self.frame_handle(i)
